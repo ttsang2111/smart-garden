@@ -1,13 +1,16 @@
 import { unstable_noStore as noStore } from 'next/cache';
 
-const server_url = process.env.SERVER_URL || 'http://localhost:7878';
+const server_url = process.env.SERVER_URL || 'http://localhost:3000';
 
 export async function fetchCardData() {
     noStore();
     try {
-        const temperature = 30.10;
-        const humidity = 30.10;
-        const moisture = 30.10;
+      let response = await fetch(`${server_url}/temperature`);
+      const temperature = await response.text();
+      response = await fetch(`${server_url}/humidity`);
+      const humidity = await response.text();
+      response = await fetch(`${server_url}/moisture`);
+      const moisture = await response.text();
       return {
         temperature,
         humidity,

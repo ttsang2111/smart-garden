@@ -1,7 +1,7 @@
 import Logo from "@/app/ui/logo";
 import UpdateServerURLForm from "@/app/ui/update-server-url-form";
 import Link from "next/link";
-
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
 export default function LoginPage() {
     return (
         <main className="flex items-center justify-center md:h-screen">
@@ -11,6 +11,7 @@ export default function LoginPage() {
                         <div className="w-32 text-white md:w-36">
                             <Logo />
                         </div>
+                            <ArrowRightIcon className="ml-auto h-12 w-12 text-gray-50" />
                     </div>
                 </Link>
                 <UpdateServerURLForm />

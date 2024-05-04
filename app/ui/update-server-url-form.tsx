@@ -2,9 +2,8 @@
 
 import { lusitana } from '@/app/ui/fonts';
 import {
-  LinkIcon
+  LinkIcon,
 } from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
 import { useFormStatus } from 'react-dom';
 import { updateServerURL } from '@/app/lib/actions';
@@ -63,7 +62,7 @@ function UpdateButton() {
   const { pending } = useFormStatus();
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
-      Update <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      Update
     </Button>
   );
 }

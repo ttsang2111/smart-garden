@@ -17,37 +17,40 @@ const URLSchema = z.object({
   }).url(),
 });
 
+export async function updateServerURL(url: string) {
+  if (!vercel_token || ! edge_config_id) {
+    return;
+}
+try {
+    const updateEdgeConfig = await fetch(
+      `https://api.vercel.com/v1/edge-config/${edge_config_id}/items`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${vercel_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: [{
+            operation: 'update',
+            key: 'server_url',
+            value: url,
+          },]
+        }),
+      },
+    );
+    const result = await updateEdgeConfig.json();
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-export async function updateServerURL(formData: FormData) {
-    if (!vercel_token || ! edge_config_id) {
-        return;
-    }
-    try {
-        const { url } = URLSchema.parse({
-          url: formData.get('url')
-        })
-        const updateEdgeConfig = await fetch(
-          `https://api.vercel.com/v1/edge-config/${edge_config_id}/items`,
-          {
-            method: 'PATCH',
-            headers: {
-              Authorization: `Bearer ${vercel_token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              items: [{
-                operation: 'update',
-                key: 'server_url',
-                value: url,
-              },]
-            }),
-          },
-        );
-        const result = await updateEdgeConfig.json();
-        console.log(result);
-      } catch (error) {
-        console.log(error);
-      }
+export async function updateServerURLForm(formData: FormData) {
+  const { url } = URLSchema.parse({
+    url: formData.get('url')
+  });
+  updateServerURL(url);
 }
 
 export async function createRecord(action: string, status: string) {

@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from './button';
 import { useFormStatus } from 'react-dom';
-import { updateServerURL } from '@/app/lib/actions';
+import { updateServerURL, updateServerURLForm } from '@/app/lib/actions';
 import { useEffect, useState } from 'react';
 import { fetchServerURL } from '../lib/data';
 
@@ -23,7 +23,8 @@ export default function UpdateServerURLForm() {
   })
 
   return (
-    <form action={updateServerURL} className="space-y-3">
+    <>
+    <form action={updateServerURLForm} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <p className="mb-3 mt-5 block text-xs font-medium text-gray-900">
           Server URL
@@ -55,6 +56,8 @@ export default function UpdateServerURLForm() {
         <UpdateButton />
       </div>
     </form>
+    <ResetButton disabled={currentURL == 'https://mini-smart-garden.vercel.app/api'} />
+    </>
   );
 }
 
@@ -63,6 +66,14 @@ function UpdateButton() {
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
       Update
+    </Button>
+  );
+}
+
+function ResetButton({disabled}: {disabled: boolean}) {
+  return (
+    <Button onClick={() => updateServerURL('')} className="mt-4 w-full" aria-disabled={disabled}>
+      Reset
     </Button>
   );
 }

@@ -9,10 +9,12 @@ import { ITEMS_PER_PAGE } from '@/config';
 const default_api_url = process.env.MY_DEFAULT_API_URL || 'http://localhost:3000/api';
 
 export async function fetchServerURL(type?: 'data' | 'actions') {
-  let server_url: string;
+  let server_url: string | undefined;
   try {
-    server_url = (await get('server_url'))!;
-    await fetch(server_url);
+    server_url = await get('server_url');
+    if (!server_url) {
+      throw new Error();
+    }
   } catch (error) {
     switch (type) {
       case 'data':

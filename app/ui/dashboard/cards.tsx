@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchCardData } from '@/app/lib/data';
+import { RESET_TIME } from '@/config';
 
 const units = {
   temperature: "°C",
@@ -21,7 +22,7 @@ export default function CardWrapper() {
 
     // Call fetchData initially and set up an interval for it
     fetchData();
-    const intervalId = setInterval(fetchData, 3000); // Fetch data every 3 seconds
+    const intervalId = setInterval(fetchData, RESET_TIME); // Fetch data every 3 seconds
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);

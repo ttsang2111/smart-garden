@@ -15,7 +15,9 @@ export default async function Page() {
             <CardWrapper />
           </Suspense>
       </div>
-      <HistoricalRecords />
+      <div className="mt-6">
+        <HistoricalRecords />
+      </div>
     </main>
   );
 }

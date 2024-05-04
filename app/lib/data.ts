@@ -3,6 +3,7 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import { Record } from './definitions';
 import { sql } from '@vercel/postgres';
+import { ITEMS_PER_PAGE } from '@/config';
 
 const server_url = process.env.SERVER_URL || 'http://localhost:3000/api/data';
 
@@ -38,7 +39,6 @@ export async function fetchLatestWateringData() {
   }
 }
 
-const ITEMS_PER_PAGE = 6;
 export async function fetchActionsPages(query?: string) {
   noStore();
   try {
@@ -71,7 +71,7 @@ export async function fetchFilteredActions(
       WHERE
         records.action ILIKE ${`%${query}%`} OR
         records.status ILIKE ${`%${query}%`} OR
-        records.date ILIKE ${`%${query}%`}
+        records.date::text ILIKE ${`%${query}%`}
       ORDER BY records.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;

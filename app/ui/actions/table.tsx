@@ -1,5 +1,6 @@
 import RecordStatus from '@/app/ui/actions/status';
 import { fetchFilteredActions } from '@/app/lib/data';
+import { formatDateToLocal } from '@/app/lib/utils';
 
 export default async function ActionsTable({
   query,
@@ -9,7 +10,6 @@ export default async function ActionsTable({
   currentPage: number;
 }) {
   const records = await fetchFilteredActions(query, currentPage);
-
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -26,15 +26,12 @@ export default async function ActionsTable({
                 <th scope="col" className="px-3 py-5 font-medium">
                   Status
                 </th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
-                </th>
               </tr>
             </thead>
             <tbody className="bg-white">
               {records?.map((record) => (
                 <tr
-                  key={record.date}
+                  key={record.action}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   
@@ -42,7 +39,7 @@ export default async function ActionsTable({
                     {record.action}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {record.date}
+                    {formatDateToLocal(record.date)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <RecordStatus status={record.status} />

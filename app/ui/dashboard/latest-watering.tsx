@@ -2,29 +2,30 @@
 
 import { fetchLatestWateringData } from '@/app/lib/data';
 import React, { useState, useEffect } from 'react';
+import { lusitana } from '@/app/ui/fonts';
+import { Table } from '@geist-ui/react'
 
 
 const HistoricalRecords = () => {
-  const [records, setRecords] = useState<string[]>();
+  const [records, setRecords] = useState<{date: string}[]>();
 
   useEffect(() => {
     const fetchData = async() => {
-        const newData = await fetchLatestWateringData();
-        setRecords(newData);
+        const dates = await fetchLatestWateringData();
+        const tableData = dates.map(date => ({ date }));
+        setRecords(tableData);
     }
     fetchData();
   }, []);
 
   return (
     <div>
-      <h2>Latest watering</h2>
-      <ul>
-        {records?.map((record, index) => (
-          <li key={index}>
-            <strong>Date:</strong> {record}
-          </li>
-        ))}
-      </ul>
+      <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        Latest auto-watering
+      </h2>
+      <Table data={records}>
+      <Table.Column prop="date" label="Time" width={150} />
+    </Table>
     </div>
   );
 }

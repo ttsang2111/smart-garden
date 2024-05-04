@@ -6,7 +6,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
         try {
             // Generate a list of dates
-            const dates = generateDateList(new Date(), 10);
+            const dates = generateDateList(new Date(), 5);
 
             // Convert dates to a formatted string
             const formattedDates = dates.map(date => 

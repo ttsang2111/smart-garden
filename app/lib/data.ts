@@ -6,7 +6,7 @@ import { sql } from '@vercel/postgres';
 import { get } from '@vercel/edge-config';
 import { ITEMS_PER_PAGE } from '@/config';
 
-const default_api_url = process.env.DEFAULT_URL || 'http://localhost:3000/api';
+const default_api_url = process.env.DEFAULT_API_URL || 'http://localhost:3000/api';
 
 export async function fetchServerURL(type?: 'data' | 'actions') {
   let server_url: string;

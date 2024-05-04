@@ -8,5 +8,5 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  res.status(200).json({ message: 'Lighting successfully!' })
+  res.status(400).json({ message: 'Lighting failure!' })
 }

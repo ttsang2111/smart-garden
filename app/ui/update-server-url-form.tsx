@@ -6,19 +6,18 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from './button';
 import { useFormStatus } from 'react-dom';
-import { updateServerURL, updateServerURLForm } from '@/app/lib/actions';
+import { updateServerURLForm } from '@/app/lib/actions';
 import { useEffect, useState } from 'react';
-import { fetchServerURL } from '../lib/data';
+import { getServerURL } from '@/app/lib/data';
 
 export default function UpdateServerURLForm() {
   const [currentURL, setCurrentURL] = useState("");
 
   useEffect(() => {
     const fetchURL = async () => {
-        const url = await fetchServerURL();
-        setCurrentURL(url);
+        const url: string | undefined = await getServerURL();
+        setCurrentURL(url ? url : "");
       };
-
       fetchURL();
   })
 
@@ -56,7 +55,6 @@ export default function UpdateServerURLForm() {
         <UpdateButton />
       </div>
     </form>
-    <ResetButton disabled={currentURL == 'https://mini-smart-garden.vercel.app/api'} />
     </>
   );
 }
@@ -66,14 +64,6 @@ function UpdateButton() {
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
       Update
-    </Button>
-  );
-}
-
-function ResetButton({disabled}: {disabled: boolean}) {
-  return (
-    <Button onClick={() => updateServerURL('')} className="mt-4 w-full" aria-disabled={disabled}>
-      Reset
     </Button>
   );
 }

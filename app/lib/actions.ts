@@ -4,8 +4,8 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { fetchServerURL } from "./data";
-import {  } from '@vercel/edge-config';
+import { DEFAULT_URL } from "@/config";
+import { getServerURL } from "./data";
 
 const vercel_token = process.env.MY_VERCEL_TOKEN;
 const edge_config_id = process.env.MY_EDGE_CONFIG_ID;
@@ -75,11 +75,18 @@ const CreateRecord = FormSchema.omit({date: true});
 
 export async function sendActionToServer(formData: FormData) {
     try {
+        let server_url = getServerURL();
+
         const { action } =  CreateRecord.parse({
-            action: formData.get("action"),
-        });
-        const server_url = await fetchServerURL('actions');
-        const response = await fetch(`${server_url}/${action}`);
+          action: formData.get("action"),
+      });
+
+        let response; 
+        try {
+          response = await fetch(`${server_url}/${action}`);
+        } catch(error) {
+          response = await fetch(`${DEFAULT_URL}/actions/${action}`);
+        }
         
         if (response.status == 200) {
             await createRecord(action, 'success');

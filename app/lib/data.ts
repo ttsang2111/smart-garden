@@ -5,44 +5,29 @@ import { Record } from './definitions';
 import { sql } from '@vercel/postgres';
 import { get } from '@vercel/edge-config';
 import { ITEMS_PER_PAGE } from '@/config';
+import { DEFAULT_URL } from '@/config';
 
-const default_api_url = process.env.MY_DEFAULT_API_URL || 'http://localhost:3000/api';
-
-export async function fetchServerURL(type?: 'data' | 'actions') {
-  let server_url: string | undefined;
-  try {
-    server_url = await get('server_url');
-    if (!server_url) {
-      throw new Error();
-    }
-  } catch (error) {
-    switch (type) {
-      case 'data':
-        server_url = `${default_api_url}/data`;
-        break;
-      case 'actions':
-        server_url = `${default_api_url}/actions`;
-        break;
-      default:
-        server_url = default_api_url;
-    }
-  }
+export async function getServerURL() {
+  let server_url: string | undefined = await get('server_url');
   return server_url;
 }
 
-export async function fetchData(server_url: string, data: string) {
+export async function fetchData(server_url: string | undefined, data: string) {
+  let response;
   try {
-    const response = await fetch(`${server_url}/${data}`);
-    return response.text();
+    response = await fetch(`${server_url}/${data}`);
+    
   } catch (error) {
-    throw new Error("Failed to fetch data.");
+    response = await fetch(`${DEFAULT_URL}/data/${data}`);
   }
+  return response.text();
 }
 
 export async function fetchCardData() {
   noStore();
   try {
-    const server_url = await fetchServerURL('data');
+    const server_url = await getServerURL();
+  
     const getData = fetchData.bind(null, server_url);
     const data = await Promise.all([
       getData('temperature'),
@@ -64,7 +49,8 @@ export async function fetchCardData() {
 export async function fetchLatestWateringData() {
   noStore();
   try {
-    const server_url = await fetchServerURL('data');
+    const server_url = await getServerURL();
+    
     const latestWateringData = await fetchData(server_url, 'latest-watering');
     return latestWateringData.split('\n');
   } catch (error) {

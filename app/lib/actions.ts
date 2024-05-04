@@ -7,8 +7,8 @@ import { redirect } from "next/navigation";
 import { fetchServerURL } from "./data";
 import {  } from '@vercel/edge-config';
 
-const vercel_token = process.env.VERCEL_TOKEN;
-const edge_config_id = process.env.EDGE_CONFIG_ID;
+const vercel_token = process.env.MY_VERCEL_TOKEN;
+const edge_config_id = process.env.MY_EDGE_CONFIG_ID;
 
 const URLSchema = z.object({
   url: z.string({

@@ -1,6 +1,7 @@
 import RecordStatus from '@/app/ui/actions/status';
 import { fetchFilteredActions } from '@/app/lib/data';
 import { formatDateToLocal } from '@/app/lib/utils';
+import RecordAction from './action';
 
 export default async function ActionsTable({
   query,
@@ -36,7 +37,7 @@ export default async function ActionsTable({
                 >
                   
                   <td className="whitespace-nowrap px-3 py-3">
-                    {record.action}
+                    <RecordAction action={record.action} />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(record.date)}

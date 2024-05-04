@@ -1,20 +1,20 @@
-import Link from 'next/link';
-import AcmeLogo from '@/app/ui/logo';
+import Logo from "@/app/ui/logo";
+import UpdateServerURLForm from "@/app/ui/update-server-url-form";
+import Link from "next/link";
 
-
-export default function Home() {
-  return (
-    <main >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <Link
-        className="mb-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4 md:h-40"
-        href="/dashboard"
-      >
-        <div className="w-32 text-white md:w-40">
-          <AcmeLogo />
-        </div>
-      </Link>
-      </div>
-    </main>
-  );
+export default function LoginPage() {
+    return (
+        <main className="flex items-center justify-center md:h-screen">
+            <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
+                <Link href='/dashboard'>
+                    <div className="flex h-20 w-full items-end rounded-lg bg-blue-500 p-3 md:h-36">
+                        <div className="w-32 text-white md:w-36">
+                            <Logo />
+                        </div>
+                    </div>
+                </Link>
+                <UpdateServerURLForm />
+            </div>
+        </main>
+    )
 }

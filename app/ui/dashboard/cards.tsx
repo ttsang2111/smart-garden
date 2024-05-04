@@ -1,25 +1,39 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchCardData } from '@/app/lib/data';
 
 const units = {
   temperature: "°C",
   humidity: "%",
-  moisure: "%",
+  moisture: "%",  // Corrected spelling
 };
 
-export default async function CardWrapper() {
-  const {
-    temperature,
-    humidity,
-    moisture,
-  } = await fetchCardData();
+export default function CardWrapper() {
+  const [data, setData] = useState({ temperature: '', humidity: '', moisture: '' });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await fetchCardData();
+      setData(newData);
+    };
+
+    // Call fetchData initially and set up an interval for it
+    fetchData();
+    const intervalId = setInterval(fetchData, 3000); // Fetch data every 3 seconds
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
 
-      <Card title="Temperature" value={temperature} type="temperature" />
-      <Card title="Humidity" value={humidity} type="humidity" />
-      <Card title="Moisure" value={moisture} type="moisure" />
+      <Card title="Temperature" value={data.temperature} type="temperature" />
+      <Card title="Humidity" value={data.humidity} type="humidity" />
+      <Card title="Moisture" value={data.moisture} type="moisture" /> {/* Corrected spelling */}
     </>
   );
 }
@@ -31,7 +45,7 @@ export function Card({
 }: {
   title: string;
   value: number | string;
-  type: 'temperature' | 'humidity' | 'moisure';
+  type: 'temperature' | 'humidity' | 'moisture'; // Corrected spelling
 }) {
   const unit = units[type];
 
@@ -40,11 +54,8 @@ export function Card({
       <div className="flex p-4">
         <h3 className="ml-2 text-sm font-medium">{title}</h3>
       </div>
-      <p
-        className={`${lusitana.className}
-          truncate rounded-xl bg-white px-4 py-8 text-center text-2xl`}
-      >
-        {value} {unit} 
+      <p className={`${lusitana.className} truncate rounded-xl bg-white px-4 py-8 text-center text-2xl`}>
+        {value} {unit}
       </p>
     </div>
   );

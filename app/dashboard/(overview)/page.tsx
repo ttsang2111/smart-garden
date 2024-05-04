@@ -2,6 +2,7 @@ import CardWrapper from '@/app/ui/dashboard/cards';
 import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import { CardsSkeleton } from '@/app/ui/skeletons';
+import HistoricalRecords from '@/app/ui/dashboard/latest-watering';
  
 export default async function Page() {
   return (
@@ -14,6 +15,7 @@ export default async function Page() {
             <CardWrapper />
           </Suspense>
       </div>
+      <HistoricalRecords />
     </main>
   );
 }

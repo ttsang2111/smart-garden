@@ -1,5 +1,4 @@
 const { db } = require('@vercel/postgres');
-const { records } = require('../app/lib/placeholder-data.js');
 
 async function seedRecords(client) {
     try {
@@ -9,28 +8,14 @@ async function seedRecords(client) {
         const createRecord = await client.sql`
           CREATE TABLE IF NOT EXISTS records (
             action VARCHAR(255) NOT NULL,
-            date DATE NOT NULL,
+            date TIMESTAMP NOT NULL,
             status VARCHAR(255) NOT NULL
           );
         `;
-    
         console.log(`Created "records" table`);
-    
-        // Insert data into the "users" table
-        const insertedRecords = await Promise.all(
-          records.map(async (record) => 
-            client.sql`
-            INSERT INTO records (action, date, status)
-            VALUES (${record.action}, ${record.date}, ${record.status})
-          `,
-          ),
-        );
-    
-        console.log(`Seeded ${insertedRecords.length} users`);
     
         return {
           createRecord,
-          records: insertedRecords,
         };
       } catch (error) {
         console.error('Error seeding records:', error);

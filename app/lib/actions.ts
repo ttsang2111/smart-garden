@@ -9,11 +9,10 @@ const server_url = process.env.SERVER_URL || 'http://localhost:3000/api/actions'
 
 
 export async function createRecord(action: string, status: string) {
-    const date = new Date().toISOString().split('T')[0];
     try {
         await sql`
         INSERT INTO records (action, status, date)
-        VALUES (${action}, ${status}, ${date})
+        VALUES (${action}, ${status}, NOW())
         `
     } catch (error) {
         return {

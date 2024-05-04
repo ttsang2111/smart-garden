@@ -36,6 +36,8 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     locale: string = 'en-US',
   ) => {
     const date = new Date(dateStr);
+    // For VietNam timezone
+    date.setHours(date.getHours() + 7);
     const options: Intl.DateTimeFormatOptions = {
       day: 'numeric',
       month: 'short',
@@ -43,9 +45,9 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: false,
+      hour12: false
     };
     const formatter = new Intl.DateTimeFormat(locale, options);
     return formatter.format(date);
-  };
+};
   

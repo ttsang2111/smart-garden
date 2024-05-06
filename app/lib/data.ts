@@ -6,6 +6,9 @@ import { sql } from '@vercel/postgres';
 import { ITEMS_PER_PAGE } from '@/config';
 import { SERVER_URL } from '@/config';
 
+export const getServerUrl = () => {
+  return SERVER_URL;
+};
 
 export async function fetchData(data: string) {
   try {

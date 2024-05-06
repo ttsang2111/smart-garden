@@ -3,32 +3,23 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import { Record } from './definitions';
 import { sql } from '@vercel/postgres';
-import { get } from '@vercel/edge-config';
 import { ITEMS_PER_PAGE } from '@/config';
-import { DEFAULT_URL } from '@/config';
+import { SERVER_URL } from '@/config';
 
-export async function getServerURL() {
-  let server_url: string | undefined = await get('server_url');
-  return server_url;
-}
 
-export async function fetchData(server_url: string | undefined, data: string) {
-  let response;
+export async function fetchData(data: string) {
   try {
-    response = await fetch(`${server_url}/${data}`);
-    
+    const response = await fetch(`${SERVER_URL}/${data}`);
+    return response.text();
   } catch (error) {
-    response = await fetch(`${DEFAULT_URL}/data/${data}`);
+    throw new Error("Failed to fetch data from server.");
   }
-  return response.text();
 }
 
 export async function fetchCardData() {
   noStore();
   try {
-    const server_url = await getServerURL();
-  
-    const getData = fetchData.bind(null, server_url);
+    const getData = fetchData.bind(null);
     const data = await Promise.all([
       getData('temperature'),
       getData('humidity'),
@@ -49,9 +40,7 @@ export async function fetchCardData() {
 export async function fetchLatestWateringData() {
   noStore();
   try {
-    const server_url = await getServerURL();
-    
-    const latestWateringData = await fetchData(server_url, 'latest-watering');
+    const latestWateringData = await fetchData('latest-watering');
     return latestWateringData.split('\n');
   } catch (error) {
     console.error('Server Error:', error);

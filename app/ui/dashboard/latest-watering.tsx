@@ -11,9 +11,13 @@ const HistoricalRecords = () => {
 
   useEffect(() => {
     const fetchData = async() => {
-        const dates = await fetchLatestWateringData();
-        const tableData = dates.map(date => ({ date }));
-        setRecords(tableData);
+        try {
+          const dates = await fetchLatestWateringData();
+          const tableData = dates.map(date => ({ date }));
+          setRecords(tableData);
+        } catch (error) {
+          return;
+        }
     }
     fetchData();
   }, []);

@@ -12,12 +12,16 @@ const units = {
 };
 
 export default function CardWrapper() {
-  const [data, setData] = useState({ temperature: '', humidity: '', moisture: '' });
+  const [data, setData] = useState({ temperature: '...', humidity: '...', moisture: '...' });
 
   useEffect(() => {
     const fetchData = async () => {
-      const newData = await fetchCardData();
-      setData(newData);
+      try {
+        const newData = await fetchCardData();
+        setData(newData);
+      } catch (error) {
+        return;
+      }
     };
 
     // Call fetchData initially and set up an interval for it
